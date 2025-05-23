@@ -1,0 +1,41 @@
+# Ignore build outputs
+bin/
+obj/
+out/
+
+# Ignore version control
+.git/
+.gitignore
+
+# Ignore IDE files
+.vscode/
+.vs/
+*.swp
+*.swo
+
+# Ignore temporary files
+**/tmp/
+**/.temp/
+
+# Ignore documentation and non-essential files
+README.md
+projectPlan.md
+*.md
+!DOCKER_README.md
+
+# Ignore test results (but preserve structure)
+TestResults/**/*
+!TestResults/.gitkeep
+
+# Ignore test project for main application containers
+# (Test containers will override this with specific context)
+# cms.Tests/
+
+# Ignore logs
+logs/
+*.log
+
+# Ignore Docker files themselves
+Dockerfile*
+.dockerignore
+docker-compose*.yml

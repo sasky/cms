@@ -1,0 +1,58 @@
+# Ignore logs
+logs/
+*.log
+# .NET Core
+bin/
+obj/
+*.dll
+*.pdb
+*.user
+*.suo
+*.cache
+*.vs/
+.vscode/
+*.userprefs
+
+# NuGet
+*.nuget.props
+*.nuget.targets
+packages/
+*.nupkg
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+
+# Visual Studio files
+.vs/
+*.user
+*.userosscache
+*.sln.docstates
+*.sln.ide/
+
+# Test Results
+TestResults/
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# .NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Rider
+.idea/
+*.sln.iml
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates

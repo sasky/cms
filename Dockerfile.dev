@@ -1,0 +1,24 @@
+FROM mcr.microsoft.com/dotnet/sdk:9.0
+WORKDIR /app
+
+# Copy csproj and restore dependencies
+COPY *.csproj ./
+RUN dotnet restore
+
+# Install dotnet-ef tool for migrations
+RUN dotnet tool install --global dotnet-ef
+ENV PATH="$PATH:/root/.dotnet/tools"
+
+# Copy the rest of the application
+COPY . ./
+
+# Expose ports for HTTP and HTTPS
+EXPOSE 5000
+EXPOSE 5001
+
+# Set environment variables for development
+ENV ASPNETCORE_ENVIRONMENT=Development
+ENV ASPNETCORE_URLS=http://+:5000
+
+# Run the application in watch mode for live reloading
+CMD ["dotnet", "watch", "run", "--urls", "http://+:5000"] 

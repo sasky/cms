@@ -1,0 +1,39 @@
+FROM mcr.microsoft.com/dotnet/sdk:9.0
+WORKDIR /app
+
+# Copy solution file first
+COPY *.sln ./
+
+# Copy all project files (main and test)
+COPY *.csproj ./
+COPY cms.Tests/*.csproj ./cms.Tests/
+
+# Restore dependencies for all projects
+RUN dotnet restore
+
+# Install additional test tools
+RUN dotnet tool install --global dotnet-reportgenerator-globaltool
+RUN dotnet tool install --global dotnet-ef
+ENV PATH="$PATH:/root/.dotnet/tools"
+
+# Copy source code for main project
+COPY *.cs ./
+COPY Controllers/ ./Controllers/
+COPY Data/ ./Data/
+COPY Models/ ./Models/
+COPY Properties/ ./Properties/
+COPY appsettings*.json ./
+
+# Copy test project files individually
+COPY cms.Tests/*.cs ./cms.Tests/
+COPY cms.Tests/Controllers/ ./cms.Tests/Controllers/
+
+# Create directories for test outputs
+RUN mkdir -p /app/TestResults
+RUN mkdir -p /app/TestResults/Coverage
+
+# Set working directory to solution root
+WORKDIR /app
+
+# Default command to run tests
+CMD ["dotnet", "test", "--configuration", "Release", "--logger", "trx", "--results-directory", "/app/TestResults", "--collect", "XPlat Code Coverage", "--settings", "/app/coverlet.runsettings"] 
