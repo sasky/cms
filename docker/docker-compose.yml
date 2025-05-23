@@ -11,7 +11,7 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./init-scripts:/docker-entrypoint-initdb.d
+      - ../init-scripts:/docker-entrypoint-initdb.d
     networks:
       - cms_network
     healthcheck:
@@ -24,8 +24,8 @@ services:
   # .NET CMS Application
   cms_app:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: docker/Dockerfile
     container_name: cms_app
     ports:
       - "8080:8080"
@@ -42,14 +42,14 @@ services:
   # Test Runner Service
   cms_tests:
     build:
-      context: .
-      dockerfile: Dockerfile.test
+      context: ..
+      dockerfile: docker/Dockerfile.test
     container_name: cms_tests
     environment:
       - ASPNETCORE_ENVIRONMENT=Testing
       - ConnectionStrings__DefaultConnection=Host=postgres;Database=cms_test_db;Username=postgres;Password=cms_password_123
     volumes:
-      - ./TestResults:/app/TestResults
+      - ../TestResults:/app/TestResults
     depends_on:
       postgres:
         condition: service_healthy

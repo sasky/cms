@@ -23,8 +23,17 @@ cms/
 ├── cms.Tests/
 │   └── Controllers/
 │       └── ContentControllerTests.cs  # Unit tests
+├── docker/                    # Docker configuration files
+│   ├── Dockerfile             # Production build
+│   ├── Dockerfile.dev         # Development build
+│   ├── Dockerfile.test        # Test build  
+│   ├── docker-compose.yml     # Production setup
+│   ├── docker-compose.dev.yml # Development setup
+│   ├── docker-scripts.sh      # Docker management script
+│   └── DOCKER_README.md       # Docker documentation
 ├── Program.cs                 # Application entry point
 ├── cms.csproj                 # Project file
+├── docker-scripts.sh          # Docker script wrapper
 └── appsettings.json          # Configuration
 ```
 
@@ -32,9 +41,33 @@ cms/
 
 - .NET 9 SDK
 - PostgreSQL database
-- (Optional) Docker for database setup
+- (Optional) Docker for containerized development
 
 ## Setup
+
+### Option A: Docker Setup (Recommended)
+
+For the easiest setup using Docker:
+
+```bash
+# Start development environment
+./docker-scripts.sh dev-up
+
+# Or start in background
+./docker-scripts.sh dev-up-bg
+
+# Run tests
+./docker-scripts.sh test-run
+
+# See all available commands
+./docker-scripts.sh help
+```
+
+**For comprehensive Docker documentation, testing guide, and advanced commands, see:**
+- `docker/DOCKER_README.md` - Complete Docker setup and usage guide
+- `TESTING_README.md` - Testing strategies and Docker test commands
+
+### Option B: Manual Setup
 
 ### 1. Clone and Restore Packages
 

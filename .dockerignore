@@ -21,7 +21,7 @@ out/
 README.md
 projectPlan.md
 *.md
-!DOCKER_README.md
+!docker/DOCKER_README.md
 
 # Ignore test results (but preserve structure)
 TestResults/**/*
@@ -35,7 +35,8 @@ TestResults/**/*
 logs/
 *.log
 
-# Ignore Docker files themselves
-Dockerfile*
-.dockerignore
-docker-compose*.yml
+# Ignore Docker files themselves from the docker directory
+docker/Dockerfile*
+docker/.dockerignore
+docker/docker-compose*.yml
+docker/docker-scripts.sh

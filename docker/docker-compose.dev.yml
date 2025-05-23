@@ -23,8 +23,8 @@ services:
   # .NET CMS Application (Development)
   cms_app:
     build:
-      context: .
-      dockerfile: Dockerfile.dev
+      context: ..
+      dockerfile: docker/Dockerfile.dev
     container_name: cms_app_dev
     ports:
       - "5500:5000"
@@ -35,15 +35,15 @@ services:
       - ASPNETCORE_URLS=http://+:5000;https://+:5001
     volumes:
       # Main application files
-      - ./Controllers:/app/Controllers
-      - ./Data:/app/Data
-      - ./Models:/app/Models
-      - ./Properties:/app/Properties
-      - ./Program.cs:/app/Program.cs
-      - ./cms.csproj:/app/cms.csproj
-      - ./appsettings.json:/app/appsettings.json
-      - ./appsettings.Development.json:/app/appsettings.Development.json
-      - ./appsettings.Docker.json:/app/appsettings.Docker.json
+      - ../Controllers:/app/Controllers
+      - ../Data:/app/Data
+      - ../Models:/app/Models
+      - ../Properties:/app/Properties
+      - ../Program.cs:/app/Program.cs
+      - ../cms.csproj:/app/cms.csproj
+      - ../appsettings.json:/app/appsettings.json
+      - ../appsettings.Development.json:/app/appsettings.Development.json
+      - ../appsettings.Docker.json:/app/appsettings.Docker.json
       # Exclude bin and obj from the host (use container's)
       - /app/bin
       - /app/obj
@@ -57,25 +57,25 @@ services:
   # Test Runner Service (Development)
   cms_tests:
     build:
-      context: .
-      dockerfile: Dockerfile.test
+      context: ..
+      dockerfile: docker/Dockerfile.test
     container_name: cms_tests_dev
     environment:
       - ASPNETCORE_ENVIRONMENT=Testing
       - ConnectionStrings__DefaultConnection=Host=postgres;Database=cms_test_db;Username=postgres;Password=cms_password_123
     volumes:
       # Mount specific directories to preserve the structure built in Dockerfile
-      - ./cms.Tests:/app/cms.Tests
-      - ./Controllers:/app/Controllers
-      - ./Data:/app/Data
-      - ./Models:/app/Models
-      - ./Properties:/app/Properties
-      - ./Program.cs:/app/Program.cs
-      - ./cms.csproj:/app/cms.csproj
-      - ./cms.sln:/app/cms.sln
-      - ./appsettings*.json:/app/
-      - ./coverlet.runsettings:/app/coverlet.runsettings
-      - ./TestResults:/app/TestResults
+      - ../cms.Tests:/app/cms.Tests
+      - ../Controllers:/app/Controllers
+      - ../Data:/app/Data
+      - ../Models:/app/Models
+      - ../Properties:/app/Properties
+      - ../Program.cs:/app/Program.cs
+      - ../cms.csproj:/app/cms.csproj
+      - ../cms.sln:/app/cms.sln
+      - ../appsettings*.json:/app/
+      - ../coverlet.runsettings:/app/coverlet.runsettings
+      - ../TestResults:/app/TestResults
       # Exclude bin and obj from the host (use container's)
       - /app/bin
       - /app/obj

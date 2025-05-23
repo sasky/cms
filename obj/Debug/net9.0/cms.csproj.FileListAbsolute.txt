@@ -122,3 +122,16 @@
 /Users/cam/Sites/sasky/dotnet/cms/obj/Debug/net9.0/cms.pdb
 /Users/cam/Sites/sasky/dotnet/cms/obj/Debug/net9.0/cms.genruntimeconfig.cache
 /Users/cam/Sites/sasky/dotnet/cms/obj/Debug/net9.0/ref/cms.dll
+/Users/cam/Sites/sasky/dotnet/cms/bin/Debug/net9.0/appsettings.Docker.json
+/Users/cam/Sites/sasky/dotnet/cms/bin/Debug/net9.0/appsettings.Testing.json
+/Users/cam/Sites/sasky/dotnet/cms/bin/Debug/net9.0/TestResults/005d2f61-9b8e-4d30-ba3a-46cbdb344e56/coverage.json
+/Users/cam/Sites/sasky/dotnet/cms/bin/Debug/net9.0/TestResults/3ae8c2cd-0e7d-4439-b8f8-636848eeed2b/coverage.json
+/Users/cam/Sites/sasky/dotnet/cms/bin/Debug/net9.0/TestResults/54fb1874-5aab-4e58-a72e-6c745b55e668/coverage.json
+/Users/cam/Sites/sasky/dotnet/cms/bin/Debug/net9.0/TestResults/954c95da-5705-473a-a81a-aaeda61b699e/coverage.json
+/Users/cam/Sites/sasky/dotnet/cms/bin/Debug/net9.0/TestResults/b99c40f6-416b-4f96-a3b1-d3d24e463899/coverage.json
+/Users/cam/Sites/sasky/dotnet/cms/bin/Debug/net9.0/TestResults/_769f5d2ab700_2025-05-23_10_57_45/In/769f5d2ab700/coverage.json
+/Users/cam/Sites/sasky/dotnet/cms/bin/Debug/net9.0/TestResults/_76a9d509491e_2025-05-23_10_58_52/In/76a9d509491e/coverage.json
+/Users/cam/Sites/sasky/dotnet/cms/bin/Debug/net9.0/TestResults/_ab4226b0aaf4_2025-05-23_10_54_33/In/ab4226b0aaf4/coverage.json
+/Users/cam/Sites/sasky/dotnet/cms/bin/Debug/net9.0/TestResults/_ac59d8997e6b_2025-05-23_10_56_24/In/ac59d8997e6b/coverage.json
+/Users/cam/Sites/sasky/dotnet/cms/bin/Debug/net9.0/TestResults/_cc03eda2541b_2025-05-23_10_55_40/In/cc03eda2541b/coverage.json
+/Users/cam/Sites/sasky/dotnet/cms/obj/Debug/net9.0/cms.sourcelink.json

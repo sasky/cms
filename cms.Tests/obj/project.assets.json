@@ -458,16 +458,22 @@
           "build/net8.0/_._": {}
         }
       },
-      "Microsoft.EntityFrameworkCore.InMemory/9.0.0-preview.1.24081.2": {
+      "Microsoft.EntityFrameworkCore.InMemory/9.0.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore": "9.0.0-preview.1.24081.2"
+          "Microsoft.EntityFrameworkCore": "9.0.0",
+          "Microsoft.Extensions.Caching.Memory": "9.0.0",
+          "Microsoft.Extensions.Logging": "9.0.0"
         },
         "compile": {
-          "lib/net8.0/Microsoft.EntityFrameworkCore.InMemory.dll": {}
+          "lib/net8.0/Microsoft.EntityFrameworkCore.InMemory.dll": {
+            "related": ".xml"
+          }
         },
         "runtime": {
-          "lib/net8.0/Microsoft.EntityFrameworkCore.InMemory.dll": {}
+          "lib/net8.0/Microsoft.EntityFrameworkCore.InMemory.dll": {
+            "related": ".xml"
+          }
         }
       },
       "Microsoft.EntityFrameworkCore.Relational/9.0.0": {
@@ -2583,16 +2589,18 @@
         "microsoft.entityframeworkcore.design.nuspec"
       ]
     },
-    "Microsoft.EntityFrameworkCore.InMemory/9.0.0-preview.1.24081.2": {
-      "sha512": "yn9Rm/y9yCX+4LcCIimksdeW2xjTTaQil76Xgf2Y42/muQZyk9xz90KTV+viegOMyvXHRePXWghW4zmtgus61A==",
+    "Microsoft.EntityFrameworkCore.InMemory/9.0.0": {
+      "sha512": "Pm4NBnv3aB8O5bBNwWRkL4a/H+3WdgKRKYD93FkR9TrUNb0jfns9JVN5w9WEUsQCm0C69Eg2Y85i8pdmSfaNnQ==",
       "type": "package",
-      "path": "microsoft.entityframeworkcore.inmemory/9.0.0-preview.1.24081.2",
+      "path": "microsoft.entityframeworkcore.inmemory/9.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
+        "PACKAGE.md",
         "lib/net8.0/Microsoft.EntityFrameworkCore.InMemory.dll",
-        "microsoft.entityframeworkcore.inmemory.9.0.0-preview.1.24081.2.nupkg.sha512",
+        "lib/net8.0/Microsoft.EntityFrameworkCore.InMemory.xml",
+        "microsoft.entityframeworkcore.inmemory.9.0.0.nupkg.sha512",
         "microsoft.entityframeworkcore.inmemory.nuspec"
       ]
     },
@@ -4054,7 +4062,7 @@
   },
   "projectFileDependencyGroups": {
     "net9.0": [
-      "Microsoft.EntityFrameworkCore.InMemory >= 9.0.0-preview.1.24081.2",
+      "Microsoft.EntityFrameworkCore.InMemory >= 9.0.0",
       "Microsoft.NET.Test.Sdk >= 17.12.0",
       "Moq >= 4.20.70",
       "cms >= 1.0.0",
@@ -4064,32 +4072,33 @@
     ]
   },
   "packageFolders": {
-    "/root/.nuget/packages/": {}
+    "/Users/cam/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/app/cms.Tests/cms.Tests.csproj",
+      "projectUniqueName": "/Users/cam/Sites/sasky/dotnet/cms/cms.Tests/cms.Tests.csproj",
       "projectName": "cms.Tests",
-      "projectPath": "/app/cms.Tests/cms.Tests.csproj",
-      "packagesPath": "/root/.nuget/packages/",
-      "outputPath": "/app/cms.Tests/obj/",
+      "projectPath": "/Users/cam/Sites/sasky/dotnet/cms/cms.Tests/cms.Tests.csproj",
+      "packagesPath": "/Users/cam/.nuget/packages/",
+      "outputPath": "/Users/cam/Sites/sasky/dotnet/cms/cms.Tests/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/root/.nuget/NuGet/NuGet.Config"
+        "/Users/cam/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
       ],
       "sources": {
+        "/opt/homebrew/Cellar/dotnet/9.0.4/libexec/library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "/app/cms.csproj": {
-              "projectPath": "/app/cms.csproj"
+            "/Users/cam/Sites/sasky/dotnet/cms/cms.csproj": {
+              "projectPath": "/Users/cam/Sites/sasky/dotnet/cms/cms.csproj"
             }
           }
         }
@@ -4104,7 +4113,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.300"
+      "SdkAnalysisLevel": "9.0.100"
     },
     "frameworks": {
       "net9.0": {
@@ -4112,7 +4121,7 @@
         "dependencies": {
           "Microsoft.EntityFrameworkCore.InMemory": {
             "target": "Package",
-            "version": "[9.0.0-preview.1.24081.2, )"
+            "version": "[9.0.0, )"
           },
           "Microsoft.NET.Test.Sdk": {
             "target": "Package",
@@ -4151,7 +4160,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.300/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/opt/homebrew/Cellar/dotnet/9.0.4/libexec/sdk/9.0.105/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

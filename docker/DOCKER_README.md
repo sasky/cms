@@ -1,63 +1,92 @@
-# Docker Setup for CMS Project
+# Docker Setup Guide
 
-This document provides instructions for running the CMS project using Docker containers.
-
-## Prerequisites
-
-- Docker Desktop installed and running
-- Docker Compose V2 (included with Docker Desktop)
+This guide explains how to run the CMS using Docker containers for development and production.
 
 ## Project Structure
 
 ```
-├── Dockerfile                 # Production build
-├── Dockerfile.dev            # Development build with hot reload
-├── docker-compose.yml        # Production setup
-├── docker-compose.dev.yml    # Development setup
-├── .dockerignore            # Files to exclude from Docker context
-├── appsettings.Docker.json  # Docker-specific configuration
-└── init-scripts/
-    └── init.sql             # PostgreSQL initialization script
+cms/
+├── docker/                     # Docker configuration directory
+│   ├── Dockerfile              # Production build
+│   ├── Dockerfile.dev          # Development build with hot reload
+│   ├── docker-compose.yml      # Production setup
+│   ├── docker-compose.dev.yml  # Development setup
+│   ├── docker-scripts.sh       # Management script (actual implementation)
+│   └── .dockerignore           # Docker ignore file
+├── docker-scripts.sh           # Wrapper script for easy access
+└── ...                         # Application files
 ```
 
 ## Quick Start
 
 ### Development Environment
 
-1. **Start the development environment:**
-   ```bash
-   docker-compose -f docker-compose.dev.yml up --build
-   ```
+```bash
+# Start development environment (interactive)
+./docker-scripts.sh dev-up
 
-2. **Access the application:**
-   - HTTP: http://localhost:5500
-   - HTTPS: https://localhost:5501
-   - Swagger UI: http://localhost:5500/swagger
+# Start development environment (background)
+./docker-scripts.sh dev-up-bg
+```
 
-3. **Access PostgreSQL:**
-   - Host: localhost
-   - Port: 5432
-   - Database: cms_db
-   - Username: postgres
-   - Password: cms_password_123
+This will start:
 
-**Note:** Development uses ports 5500/5501 to avoid conflicts with macOS AirPlay Receiver which uses port 5000.
+- PostgreSQL database on port 5432
+- .NET application on ports 5500 (HTTP) and 5501 (HTTPS)
+- Hot reload enabled for development
 
 ### Production Environment
 
-1. **Start the production environment:**
-   ```bash
-   docker-compose up --build -d
-   ```
+```bash
+# Start production environment
+./docker-scripts.sh prod-up
+```
 
-2. **Access the application:**
-   - HTTP: http://localhost:8080
+This will start:
+
+- PostgreSQL database on port 5432
+- .NET application on port 8080
+- Optimized production build
+
+## All Available Commands
+
+### Development Commands
+
+```bash
+./docker-scripts.sh dev-up          # Start development environment (interactive)
+./docker-scripts.sh dev-up-bg       # Start development environment (background)
+./docker-scripts.sh dev-down        # Stop development environment
+./docker-scripts.sh dev-logs        # Show development logs
+```
+
+### Production Commands
+
+```bash
+./docker-scripts.sh prod-up         # Start production environment
+./docker-scripts.sh prod-down       # Stop production environment
+./docker-scripts.sh prod-logs       # Show production logs
+```
+
+### Manual Docker Commands
+
+If you prefer using docker-compose directly from the docker directory:
+
+```bash
+cd docker
+
+# Development
+docker-compose -f docker-compose.dev.yml up --build
+
+# Production
+docker-compose up --build -d
+```
 
 ## Database Management
 
 ### Running Migrations
 
 For development environment:
+
 ```bash
 # Connect to the running development container
 docker exec -it cms_app_dev bash
@@ -67,6 +96,7 @@ dotnet ef database update
 ```
 
 For production environment:
+
 ```bash
 # Connect to the running production container
 docker exec -it cms_app bash
@@ -78,6 +108,7 @@ dotnet ef database update
 ### Creating New Migrations
 
 In development:
+
 ```bash
 # Connect to the development container
 docker exec -it cms_app_dev bash
@@ -89,6 +120,7 @@ dotnet ef migrations add MigrationName
 ## Useful Commands
 
 ### Viewing Logs
+
 ```bash
 # View all service logs
 docker-compose logs
@@ -102,6 +134,7 @@ docker-compose logs -f cms_app
 ```
 
 ### Stopping Services
+
 ```bash
 # Stop all services
 docker-compose down
@@ -111,6 +144,7 @@ docker-compose down -v
 ```
 
 ### Rebuilding Services
+
 ```bash
 # Rebuild and restart a specific service
 docker-compose up --build cms_app
@@ -122,11 +156,13 @@ docker-compose up --build
 ### Database Backup and Restore
 
 #### Backup
+
 ```bash
 docker exec cms_postgres pg_dump -U postgres cms_db > backup.sql
 ```
 
 #### Restore
+
 ```bash
 docker exec -i cms_postgres psql -U postgres cms_db < backup.sql
 ```
@@ -136,11 +172,13 @@ docker exec -i cms_postgres psql -U postgres cms_db < backup.sql
 The following environment variables are configured in docker-compose files:
 
 ### Application
+
 - `ASPNETCORE_ENVIRONMENT`: Set to Development or Production
 - `ConnectionStrings__DefaultConnection`: PostgreSQL connection string
 - `ASPNETCORE_URLS`: URLs the application listens on
 
 ### PostgreSQL
+
 - `POSTGRES_DB`: Database name (cms_db)
 - `POSTGRES_USER`: Database user (postgres)
 - `POSTGRES_PASSWORD`: Database password (cms_password_123)
@@ -148,11 +186,13 @@ The following environment variables are configured in docker-compose files:
 ## Port Configuration
 
 ### Development Environment
+
 - **Application HTTP**: 5500 (mapped from container's 5000)
 - **Application HTTPS**: 5501 (mapped from container's 5001)
 - **PostgreSQL**: 5432
 
 ### Production Environment
+
 - **Application HTTP**: 8080
 - **PostgreSQL**: 5432
 
@@ -162,7 +202,8 @@ The following environment variables are configured in docker-compose files:
 
 ### Common Issues
 
-1. **Port conflicts**: 
+1. **Port conflicts**:
+
    - **macOS AirPlay Receiver conflict**: We use ports 5500/5501 in development to avoid the common port 5000 conflict
    - **Other conflicts**: If you see port conflicts, modify the port mappings in docker-compose files
 
@@ -178,6 +219,7 @@ If you prefer to use the standard ports 5000/5001, you can disable AirPlay Recei
 2. Uncheck **AirPlay Receiver**
 
 Or via command line:
+
 ```bash
 sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.AirPlayXPCHelper.plist
 ```
@@ -187,6 +229,7 @@ sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.AirPlayXPCHelpe
 PostgreSQL includes a health check that verifies the database is ready to accept connections. The application container waits for PostgreSQL to be healthy before starting.
 
 ### Viewing Container Status
+
 ```bash
 # Check if containers are running
 docker-compose ps

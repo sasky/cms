@@ -1,19 +1,40 @@
-# Testing with Docker
+# Testing Guide
 
-This guide explains how to run tests for the CMS project using Docker containers.
+This document provides comprehensive information about running tests for the CMS project.
 
 ## Overview
 
-The Docker test setup provides:
-- **Isolated test environment** with PostgreSQL test database
-- **Code coverage analysis** with HTML reports  
-- **Test watching** for development with hot reload
-- **Unit and integration test separation**
-- **CI/CD ready** configurations
+The CMS project includes a robust testing setup with:
+
+- Unit tests for controllers and business logic
+- Integration tests with real database
+- Docker-based test environment
+- Code coverage analysis
+- Continuous test running with hot reload
+
+## Project Structure
+
+```
+cms/
+├── cms.Tests/                  # Test project
+│   ├── Controllers/
+│   │   └── ContentControllerTests.cs
+│   ├── cms.Tests.csproj       # Test project file
+│   └── Usings.cs              # Global using statements
+├── docker/                    # Docker configuration
+│   ├── Dockerfile.test        # Test environment container
+│   ├── docker-compose.yml     # Includes test services
+│   ├── docker-compose.dev.yml # Development with test services
+│   └── docker-scripts.sh      # Test management commands
+├── coverlet.runsettings       # Coverage configuration
+├── TestResults/               # Generated test results and coverage
+└── docker-scripts.sh          # Wrapper for test commands
+```
 
 ## Quick Start
 
 ### Simple Test Run
+
 ```bash
 # Run all tests in development environment
 ./run-tests.sh
@@ -26,6 +47,7 @@ The Docker test setup provides:
 ```
 
 ### Advanced Usage
+
 ```bash
 # Run only unit tests in production environment
 ./run-tests.sh --unit --prod
@@ -44,6 +66,7 @@ The Docker test setup provides:
 The main Docker management script provides these test commands:
 
 #### Run All Tests
+
 ```bash
 # Development environment (default)
 ./docker-scripts.sh test-run
@@ -53,6 +76,7 @@ The main Docker management script provides these test commands:
 ```
 
 #### Test with Coverage
+
 ```bash
 # Run tests and generate coverage report
 ./docker-scripts.sh test-coverage
@@ -62,12 +86,14 @@ The main Docker management script provides these test commands:
 ```
 
 #### Watch Mode (Development Only)
+
 ```bash
 # Automatically re-run tests when code changes
 ./docker-scripts.sh test-watch
 ```
 
 #### Unit Tests Only
+
 ```bash
 # Filter to run only unit tests
 ./docker-scripts.sh test-unit
@@ -77,6 +103,7 @@ The main Docker management script provides these test commands:
 ```
 
 #### Integration Tests Only
+
 ```bash
 # Filter to run only integration tests
 ./docker-scripts.sh test-integration
@@ -86,6 +113,7 @@ The main Docker management script provides these test commands:
 ```
 
 #### Clean Test Artifacts
+
 ```bash
 # Remove test results and stop test containers
 ./docker-scripts.sh test-clean
@@ -116,24 +144,27 @@ public void IntegrationTest_Example()
 ### Test Database
 
 - **Development**: Uses `cms_test_db` database
-- **Production**: Uses `cms_test_db` database  
+- **Production**: Uses `cms_test_db` database
 - **Connection**: Automatically configured via environment variables
 
 ### Test Environment Variables
 
 The test containers use these environment variables:
+
 - `ASPNETCORE_ENVIRONMENT=Testing`
 - `ConnectionStrings__DefaultConnection=Host=postgres;Database=cms_test_db;Username=postgres;Password=cms_password_123`
 
 ## Access Points
 
 ### Development Environment
+
 - **Application HTTP**: http://localhost:5500
-- **Application HTTPS**: https://localhost:5501  
+- **Application HTTPS**: https://localhost:5501
 - **Swagger UI**: http://localhost:5500/swagger
 - **PostgreSQL**: localhost:5432
 
 ### Production Environment
+
 - **Application HTTP**: http://localhost:8080
 - **PostgreSQL**: localhost:5432
 
@@ -142,7 +173,9 @@ The test containers use these environment variables:
 ## Test Results and Coverage
 
 ### Test Results Location
+
 All test results are saved to the `./TestResults/` directory:
+
 ```
 TestResults/
 ├── TestResults_*.trx           # Test result files
@@ -152,14 +185,18 @@ TestResults/
 ```
 
 ### Viewing Coverage Reports
+
 After running tests with coverage:
+
 ```bash
 # Open the coverage report in your browser
 open TestResults/CoverageReport/index.html
 ```
 
 ### Coverage Configuration
+
 Coverage settings are configured in `coverlet.runsettings`:
+
 - Excludes test assemblies and generated code
 - Includes multiple report formats (Cobertura, OpenCover, LCOV)
 - Excludes Views and wwwroot files
@@ -170,12 +207,14 @@ Coverage settings are configured in `coverlet.runsettings`:
 ### Test Containers
 
 #### Development Test Container (`cms_tests_dev`)
-- Uses `Dockerfile.test` 
+
+- Uses `Dockerfile.test`
 - Volume mounts source code for live reload
 - Runs with `--watch` flag for automatic re-runs
 - Debug configuration
 
 #### Production Test Container (`cms_tests`)
+
 - Uses `Dockerfile.test`
 - No volume mounting
 - Release configuration
@@ -184,6 +223,7 @@ Coverage settings are configured in `coverlet.runsettings`:
 ### Test-Specific Dockerfile
 
 The `Dockerfile.test` includes:
+
 - .NET 9.0 SDK with test tools
 - Entity Framework tools for migrations
 - ReportGenerator for coverage reports
@@ -193,11 +233,12 @@ The `Dockerfile.test` includes:
 ## Integration with CI/CD
 
 ### GitHub Actions Example
+
 ```yaml
 - name: Run Tests with Coverage
   run: |
     docker-compose --profile test run --rm cms_tests
-    
+
 - name: Upload Coverage Reports
   uses: codecov/codecov-action@v3
   with:
@@ -207,6 +248,7 @@ The `Dockerfile.test` includes:
 ### Test Profiles
 
 Both docker-compose files use profiles to separate test services:
+
 ```bash
 # Include test services
 docker-compose --profile test up
@@ -220,7 +262,9 @@ docker-compose up
 ### Common Issues
 
 #### Port Conflicts
+
 If you see port conflicts, ensure the main application isn't running:
+
 ```bash
 ./docker-scripts.sh dev-down
 ./docker-scripts.sh prod-down
@@ -229,7 +273,9 @@ If you see port conflicts, ensure the main application isn't running:
 **macOS AirPlay Receiver**: Development uses ports 5500/5501 instead of 5000/5001 to avoid conflicts with AirPlay Receiver which uses port 5000 by default.
 
 #### Database Connection Issues
+
 Tests use a separate test database (`cms_test_db`). If you see connection issues:
+
 ```bash
 # Check PostgreSQL container status
 docker-compose ps postgres
@@ -239,7 +285,9 @@ docker-compose logs postgres
 ```
 
 #### Test Container Build Issues
+
 If the test container fails to build:
+
 ```bash
 # Rebuild test container
 docker-compose --profile test build cms_tests
@@ -249,7 +297,9 @@ docker-compose --profile test build --no-cache cms_tests
 ```
 
 #### Coverage Report Not Generated
+
 Ensure tests run successfully first:
+
 ```bash
 # Clean and retry
 ./docker-scripts.sh test-clean
@@ -259,6 +309,7 @@ Ensure tests run successfully first:
 ### Debugging Tests
 
 #### Access Test Container
+
 ```bash
 # Connect to running test container (development)
 docker exec -it cms_tests_dev bash
@@ -268,6 +319,7 @@ dotnet test --filter "MethodName=SpecificTest"
 ```
 
 #### View Test Logs
+
 ```bash
 # View test container logs
 docker-compose --profile test logs cms_tests
@@ -281,18 +333,21 @@ docker-compose --profile test logs -f cms_tests
 ### Development vs Production
 
 **Development Environment:**
+
 - Volume mounting for live reload
 - Debug configuration
 - Watch mode available
 - Slower but more convenient
 
 **Production Environment:**
+
 - No volume mounting
 - Release configuration optimized
 - Faster execution
 - CI/CD ready
 
 ### Test Execution Speed
+
 - Unit tests run faster (no database)
 - Integration tests require database setup
 - Use test categories to run subsets
@@ -301,22 +356,25 @@ docker-compose --profile test logs -f cms_tests
 ## Best Practices
 
 ### Writing Testable Code
+
 1. Use dependency injection
 2. Separate unit tests from integration tests
 3. Use traits/categories for test organization
 4. Mock external dependencies
 
 ### Test Organization
+
 ```
 cms.Tests/
 ├── Controllers/           # Controller tests
-├── Services/             # Service layer tests  
+├── Services/             # Service layer tests
 ├── Integration/          # Integration tests
 ├── Unit/                 # Unit tests
 └── Helpers/              # Test utilities
 ```
 
 ### Test Data Management
+
 - Use Entity Framework InMemory for unit tests
 - Use test database for integration tests
 - Clean up test data between tests
@@ -325,7 +383,9 @@ cms.Tests/
 ## Advanced Configuration
 
 ### Custom Test Settings
+
 Create `appsettings.Testing.json` for test-specific configuration:
+
 ```json
 {
   "ConnectionStrings": {
@@ -340,17 +400,21 @@ Create `appsettings.Testing.json` for test-specific configuration:
 ```
 
 ### Custom Coverage Rules
+
 Modify `coverlet.runsettings` to customize coverage:
+
 ```xml
 <Exclude>[*]*.Program,[*]*.Startup</Exclude>
 <Threshold>80</Threshold>
 ```
 
 ### Test Parallelization
+
 Configure parallel test execution in test projects:
+
 ```xml
 <PropertyGroup>
   <ParallelizeTestCollections>true</ParallelizeTestCollections>
   <MaxParallelThreads>4</MaxParallelThreads>
 </PropertyGroup>
-``` 
+```

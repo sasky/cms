@@ -1,0 +1,17 @@
+FROM mcr.microsoft.com/dotnet/sdk:9.0
+WORKDIR /app
+
+# Install additional test tools
+RUN dotnet tool install --global dotnet-reportgenerator-globaltool
+RUN dotnet tool install --global dotnet-ef
+ENV PATH="$PATH:/root/.dotnet/tools"
+
+# Create directories for test outputs
+RUN mkdir -p /app/TestResults
+RUN mkdir -p /app/TestResults/Coverage
+
+# Working directory for tests
+WORKDIR /app
+
+# Default command to run tests - this will work with volume mounts
+CMD ["dotnet", "test", "cms.Tests/cms.Tests.csproj", "--configuration", "Debug", "--logger", "trx", "--results-directory", "/app/TestResults", "--collect", "XPlat Code Coverage", "--settings", "/app/coverlet.runsettings"] 
