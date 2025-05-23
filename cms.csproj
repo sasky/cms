@@ -15,4 +15,11 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="cms.Tests/**" />
+    <Content Remove="cms.Tests/**" />
+    <EmbeddedResource Remove="cms.Tests/**" />
+    <None Remove="cms.Tests/**" />
+  </ItemGroup>
+
 </Project>

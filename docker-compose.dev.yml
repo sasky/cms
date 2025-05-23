@@ -64,10 +64,23 @@ services:
       - ASPNETCORE_ENVIRONMENT=Testing
       - ConnectionStrings__DefaultConnection=Host=postgres;Database=cms_test_db;Username=postgres;Password=cms_password_123
     volumes:
-      - .:/app
+      # Mount specific directories to preserve the structure built in Dockerfile
+      - ./cms.Tests:/app/cms.Tests
+      - ./Controllers:/app/Controllers
+      - ./Data:/app/Data
+      - ./Models:/app/Models
+      - ./Properties:/app/Properties
+      - ./Program.cs:/app/Program.cs
+      - ./cms.csproj:/app/cms.csproj
+      - ./cms.sln:/app/cms.sln
+      - ./appsettings*.json:/app/
+      - ./coverlet.runsettings:/app/coverlet.runsettings
       - ./TestResults:/app/TestResults
+      # Exclude bin and obj from the host (use container's)
       - /app/bin
       - /app/obj
+      - /app/cms.Tests/bin
+      - /app/cms.Tests/obj
     depends_on:
       postgres:
         condition: service_healthy
@@ -78,8 +91,8 @@ services:
     command:
       [
         "dotnet",
-        "watch",
         "test",
+        "cms.Tests/cms.Tests.csproj",
         "--configuration",
         "Debug",
         "--logger",

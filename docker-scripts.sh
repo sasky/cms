@@ -142,11 +142,11 @@ test_unit() {
 
     if [ "$ENV" = "dev" ]; then
         docker-compose -f docker-compose.dev.yml --profile test run --rm cms_tests \
-            dotnet test --filter "Category!=Integration" --configuration Debug \
+            dotnet test cms.Tests/cms.Tests.csproj --filter "Category!=Integration" --configuration Debug \
             --logger trx --results-directory /app/TestResults
     else
         docker-compose --profile test run --rm cms_tests \
-            dotnet test --filter "Category!=Integration" --configuration Release \
+            dotnet test cms.Tests/cms.Tests.csproj --filter "Category!=Integration" --configuration Release \
             --logger trx --results-directory /app/TestResults
     fi
 }
@@ -159,11 +159,11 @@ test_integration() {
 
     if [ "$ENV" = "dev" ]; then
         docker-compose -f docker-compose.dev.yml --profile test run --rm cms_tests \
-            dotnet test --filter "Category=Integration" --configuration Debug \
+            dotnet test cms.Tests/cms.Tests.csproj --filter "Category=Integration" --configuration Debug \
             --logger trx --results-directory /app/TestResults
     else
         docker-compose --profile test run --rm cms_tests \
-            dotnet test --filter "Category=Integration" --configuration Release \
+            dotnet test cms.Tests/cms.Tests.csproj --filter "Category=Integration" --configuration Release \
             --logger trx --results-directory /app/TestResults
     fi
 }

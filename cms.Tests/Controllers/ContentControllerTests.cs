@@ -45,7 +45,7 @@ public class ContentControllerTests : IDisposable
         // Arrange
         var item1 = new ContentItem { Payload = JsonDocument.Parse("{\"test\":\"data1\"}") };
         var item2 = new ContentItem { Payload = JsonDocument.Parse("{\"test\":\"data2\"}") };
-        
+
         _context.ContentItems.AddRange(item1, item2);
         await _context.SaveChangesAsync();
 
@@ -98,10 +98,10 @@ public class ContentControllerTests : IDisposable
         var actionResult = Assert.IsType<ActionResult<ContentItem>>(result);
         var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(actionResult.Result);
         var createdItem = Assert.IsType<ContentItem>(createdAtActionResult.Value);
-        
+
         Assert.True(createdItem.Id > 0);
         Assert.NotNull(createdItem.Payload);
-        
+
         // Verify item was saved to database
         var itemInDb = await _context.ContentItems.FindAsync(createdItem.Id);
         Assert.NotNull(itemInDb);
@@ -137,7 +137,7 @@ public class ContentControllerTests : IDisposable
 
         // Assert
         Assert.IsType<NoContentResult>(result);
-        
+
         // Verify item was updated
         var updatedItem = await _context.ContentItems.FindAsync(item.Id);
         Assert.NotNull(updatedItem);
@@ -171,7 +171,7 @@ public class ContentControllerTests : IDisposable
         // Act
         var result = await _controller.PutContentItem(item.Id, dto);
 
-        // Assert
+        //  Assert
         var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
         Assert.Equal("Invalid JSON payload", badRequestResult.Value);
     }
@@ -189,7 +189,7 @@ public class ContentControllerTests : IDisposable
 
         // Assert
         Assert.IsType<NoContentResult>(result);
-        
+
         // Verify item was deleted
         var deletedItem = await _context.ContentItems.FindAsync(item.Id);
         Assert.Null(deletedItem);
@@ -209,4 +209,4 @@ public class ContentControllerTests : IDisposable
     {
         _context.Dispose();
     }
-} 
+}

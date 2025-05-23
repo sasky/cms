@@ -4,36 +4,38 @@ WORKDIR /app
 # Copy solution file first
 COPY *.sln ./
 
-# Copy all project files (main and test)
-COPY *.csproj ./
-COPY cms.Tests/*.csproj ./cms.Tests/
+# Copy main project files (excluding test files)
+COPY cms.csproj ./
+COPY Controllers/ ./Controllers/
+COPY Data/ ./Data/
+COPY Models/ ./Models/
+COPY Properties/ ./Properties/
+COPY appsettings*.json ./
+COPY Program.cs ./
+COPY Startup.cs ./
 
-# Restore dependencies for all projects
+# Copy test project files into test folder only
+COPY cms.Tests/*.csproj ./cms.Tests/
+COPY cms.Tests/*.cs ./cms.Tests/
+COPY cms.Tests/Controllers/ ./cms.Tests/Controllers/
+COPY cms.Tests/GlobalUsings.cs ./cms.Tests/
+
+# Restore and build
 RUN dotnet restore
+RUN dotnet build cms.csproj
+RUN dotnet build cms.Tests/cms.Tests.csproj
 
 # Install additional test tools
 RUN dotnet tool install --global dotnet-reportgenerator-globaltool
 RUN dotnet tool install --global dotnet-ef
 ENV PATH="$PATH:/root/.dotnet/tools"
 
-# Copy source code for main project
-COPY *.cs ./
-COPY Controllers/ ./Controllers/
-COPY Data/ ./Data/
-COPY Models/ ./Models/
-COPY Properties/ ./Properties/
-COPY appsettings*.json ./
-
-# Copy test project files individually
-COPY cms.Tests/*.cs ./cms.Tests/
-COPY cms.Tests/Controllers/ ./cms.Tests/Controllers/
-
 # Create directories for test outputs
 RUN mkdir -p /app/TestResults
 RUN mkdir -p /app/TestResults/Coverage
 
-# Set working directory to solution root
+# Stay in root directory for dotnet commands
 WORKDIR /app
 
-# Default command to run tests
-CMD ["dotnet", "test", "--configuration", "Release", "--logger", "trx", "--results-directory", "/app/TestResults", "--collect", "XPlat Code Coverage", "--settings", "/app/coverlet.runsettings"] 
+# Default command to run tests - explicitly target the test project
+CMD ["dotnet", "watch", "test", "cms.Tests/cms.Tests.csproj", "--configuration", "Debug", "--logger", "trx", "--results-directory", "/app/TestResults", "--collect", "XPlat Code Coverage", "--settings", "/app/coverlet.runsettings"] 
